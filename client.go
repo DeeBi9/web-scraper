@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -9,7 +10,7 @@ import (
 // With the status code equals to 200 it will parse the
 // HTML content
 func parseContent() {
-	//
+
 }
 
 func noContent() {
@@ -60,4 +61,7 @@ func main() {
 
 	// Passing the status code to handleResponse
 	handleResponse(resp.Status)
+
+	bytes, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(bytes))
 }
