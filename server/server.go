@@ -12,5 +12,5 @@ type ResponseWriter interface {
 }*/
 
 func main() {
-	http.ListenAndServe(":8080", http.FileServer(http.Dir("./as")))
+	http.ListenAndServe(":8080", http.FileServer(http.Dir("./public/")))
 }
