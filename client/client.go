@@ -23,6 +23,10 @@ func noContent(resp *http.Response) {
 	}
 }
 
+func clienError() {
+	//
+}
+
 func handleResponse(statusCode string, resp *http.Response) {
 	code_list := strings.Split(statusCode, " ")
 	code := code_list[0]
@@ -39,7 +43,7 @@ func handleResponse(statusCode string, resp *http.Response) {
 	case code == "304":
 		//
 	case code == "400": // Cannot process due to client error
-		// Client Error
+		clienError()
 	case code == "401":
 		// Unauthorized
 	case code == "403":
