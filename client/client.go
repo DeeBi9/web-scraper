@@ -23,7 +23,7 @@ func noContent(resp *http.Response) {
 	}
 }
 
-func clienError() {
+func clientError() {
 	//
 }
 
@@ -43,7 +43,7 @@ func handleResponse(statusCode string, resp *http.Response) {
 	case code == "304":
 		//
 	case code == "400": // Cannot process due to client error
-		clienError()
+		clientError()
 	case code == "401":
 		// Unauthorized
 	case code == "403":
