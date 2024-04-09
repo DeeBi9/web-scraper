@@ -1,19 +1,39 @@
+package utils
+
+import (
+	"fmt"
+	"net/http"
+)
+
+var url string
+
+func SpecifyUrl(url string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println("Incorrect url")
+		panic(err)
+	}
+	fmt.Println(resp)
+}
+
 type utils struct {
+	id    string
+	class string
 }
 
-func ById() {
+func UseId() {
 	//
 }
 
-func ByPath() {
+func UsePath() {
 	//
 }
 
-func ByPath() {
+func UsePath() {
 	//
 }
 
-func ByCssSelector() {
+func UseCssSelector() {
 	//
 }
 
@@ -21,14 +41,14 @@ func TagName() {
 	//
 }
 
-func ByLinkText() {
+func UseLinkText() {
 	//
 }
 
-func ByName() {
+func UseName() {
 	//
 }
 
-func ByAttr() {
+func UseAttr() {
 	//
 }
