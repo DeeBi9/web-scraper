@@ -1,3 +1,4 @@
+// Mock server for testing the package
 package main
 
 import "net/http"
