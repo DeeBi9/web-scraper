@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"golang.org/x/net/html"
 )
 
 // With the status code equals to 200 it will parse the
@@ -14,7 +17,20 @@ func parseContent(resp *http.Response) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(body))
+
+	tokenizer := html.NewTokenizer(strings.NewReader(string(body)))
+	for {
+		tokenType := tokenizer.Next()
+		token := tokenizer.Token()
+		if tokenType == html.ErrorToken {
+			if tokenizer.Err() == io.EOF {
+				return
+			}
+			fmt.Printf("Error: %v", tokenizer.Err())
+			return
+		}
+		fmt.Printf("Token: %v\n", html.UnescapeString(token.String()))
+	}
 }
 
 func noContent(resp *http.Response) {
@@ -65,7 +81,7 @@ func main() {
 	}
 	defer resp.Body.Close()
 
-	// Print the response status and headers.
+	// Print the response.
 	fmt.Println(resp)
 	// Passing the status code to handleResponse
 	handleResponse(resp.Status, resp)
