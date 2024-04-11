@@ -14,9 +14,27 @@ type utils struct {
 	id    string
 	class string
 }
+type store struct {
+	url  string
+	resp *http.Response
+}
 
-var resp *http.Response
-var url string
+// This is function to get response for the give url by the user
+func (st store) getResponse() *http.Response {
+	response := st.resp
+	return response
+}
+
+func (st store) Url(url string) {
+	var store store
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println("Incorrect url")
+		panic(err)
+	}
+	store.resp = resp
+	store.url = url
+}
 
 func parseContent(resp *http.Response) {
 	body, err := ioutil.ReadAll(resp.Body)
@@ -72,15 +90,6 @@ func handleResponse(statusCode string, resp *http.Response) {
 		// Forbidden
 	case code == "404":
 		// Not Found
-	}
-
-}
-
-func Url(url string) {
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Println("Incorrect url")
-		panic(err)
 	}
 
 }
