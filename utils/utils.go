@@ -19,21 +19,24 @@ type store struct {
 	resp *http.Response
 }
 
-// This is function to get response for the give url by the user
+// Object for store datatype
+var st store
+
+// This is function to get response for the given url by the user
 func (st store) getResponse() *http.Response {
 	response := st.resp
 	return response
 }
 
 func (st store) Url(url string) {
-	var store store
+
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println("Incorrect url")
 		panic(err)
 	}
-	store.resp = resp
-	store.url = url
+	st.resp = resp
+	st.url = url
 }
 
 func parseContent(resp *http.Response) {
@@ -92,6 +95,18 @@ func handleResponse(statusCode string, resp *http.Response) {
 		// Not Found
 	}
 
+}
+
+func getHtml() {
+	resp := st.resp
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	defer resp.Body.Close()
+
+	fmt.Println(string(body))
 }
 
 func UseId() {
