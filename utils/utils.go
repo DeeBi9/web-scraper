@@ -19,15 +19,30 @@ type store struct {
 	resp *http.Response
 }
 
-// Object for store datatype
+// Object of store datatype
 var st store
 
 // This is function to get response for the given url by the user
 func (st store) getResponse() *http.Response {
 	response := st.resp
+
+	code_list := strings.Split(response.Status, " ")
+	code := code_list[0]
+
+	switch {
+	case code == "200": // The request is successful
+		fmt.Println("TRUE")
+	case code == "400": // Cannot process due to client error
+		fmt.Println("Client Error")
+	case code == "401":
+		fmt.Println("Unauthorized")
+	case code == "404":
+		fmt.Println("Page Not Found")
+	}
 	return response
 }
 
+// This function is to set the URL entered by the user.
 func (st store) Url(url string) {
 
 	resp, err := http.Get(url)
@@ -47,8 +62,10 @@ func parseContent(resp *http.Response) {
 
 	tokenizer := html.NewTokenizer(strings.NewReader(string(body)))
 	for {
-		tokenType := tokenizer.Next()
-		token := tokenizer.Token()
+		tokenType := tokenizer.Next() // Increment the next token type
+		token := tokenizer.Token()    // Increment the next token value
+
+		/* Token type error or argument error handler */
 		if tokenType == html.ErrorToken {
 			if tokenizer.Err() == io.EOF {
 				return
@@ -58,43 +75,6 @@ func parseContent(resp *http.Response) {
 		}
 		fmt.Printf("Token: %v\n", html.UnescapeString(token.String()))
 	}
-}
-
-func noContent(resp *http.Response) {
-	if resp.ContentLength == 0 {
-		fmt.Println("The Response body has no content")
-	}
-}
-
-func clientError() {
-	//
-}
-
-func handleResponse(statusCode string, resp *http.Response) {
-	code_list := strings.Split(statusCode, " ")
-	code := code_list[0]
-
-	switch {
-	case code == "200": // The request is successful
-		parseContent(resp)
-	case code == "204": // Server successfully processed the request but has no content
-		noContent(resp)
-	case code == "301":
-		//
-	case code == "302":
-		//
-	case code == "304":
-		//
-	case code == "400": // Cannot process due to client error
-		clientError()
-	case code == "401":
-		// Unauthorized
-	case code == "403":
-		// Forbidden
-	case code == "404":
-		// Not Found
-	}
-
 }
 
 func getHtml() {
@@ -107,6 +87,10 @@ func getHtml() {
 	defer resp.Body.Close()
 
 	fmt.Println(string(body))
+}
+
+func UseTag() {
+	//
 }
 
 func UseId() {
