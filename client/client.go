@@ -29,7 +29,7 @@ func parseContent(resp *http.Response) {
 			fmt.Printf("Error: %v", tokenizer.Err())
 			return
 		}
-		fmt.Printf("Token: %v\n", html.UnescapeString(token.String()))
+		fmt.Printf("Token: %v\n", token.String())
 	}
 }
 
